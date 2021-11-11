@@ -2,13 +2,15 @@ import streamlit as st
 import pandas as pd
 
 def call_backend(image):
+    import os
     import requests
 
-    url = 'https://bird-detection-api-qc7z4pqwva-uc.a.run.app/predict'
+    url = os.environ.get('API_URL')
+    headers = {'X-API-KEY': os.environ.get('API_KEY')}
     files = {'image': image}
     
     try:
-        response = requests.post(url, files = files)
+        response = requests.post(url, files = files, headers = headers)
         j = response.json()
         bird = j["bird"]
         proba = j["probability"]
